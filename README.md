@@ -1,17 +1,41 @@
-# mini_shop
+# 🛒 MiniShop — Flutter E-Commerce App
 
-A new Flutter project.
+A monochrome Flutter e-commerce app featuring Dark/Light modes, multi-language support (English & Myanmar), and Provider state management.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## ✨ Features
 
-A few resources to get you started if this is your first Flutter project:
+- **🖤 Monochrome Minimalist UI:** Black & White aesthetic with clean line art.
+- **🌗 Dark & Light Themes:** Instant switching between Dark and Light modes.
+- **🌐 Multi-Language Support:** Toggle between English and Myanmar (Burmese).
+- **🛍️ Cart Management:** Add items, adjust quantities, view total price, and clear cart.
+- **📦 Dynamic Product Catalog:** Browse products with category filtering and detailed views.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🛠️ Tech Stack
+
+- **Framework:** Flutter
+- **State Management:** Provider
+- **Language:** Dart
+
+---
+
+## 📁 Project Structure
+
+```text
+lib/
+├── models/
+│   ├── product.dart
+│   └── cart_item.dart
+├── providers/
+│   ├── product_provider.dart
+│   ├── cart_provider.dart
+│   ├── theme_provider.dart
+│   └── language_provider.dart
+└── views/
+    ├── get_started_view.dart
+    ├── product_list_view.dart
+    ├── product_detail_view.dart
+    └── cart_view.dart
