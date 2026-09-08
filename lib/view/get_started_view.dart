@@ -16,92 +16,98 @@ class _GetStartedViewState extends State<GetStartedView> {
   int _currentPage = 0;
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _navigateToHome() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ProductListView(),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final langProvider = Provider.of<LanguageProvider>(context);
+    final theme = Theme.of(context);
     final isDark = themeProvider.isDarkMode;
-final bgColor = isDark ? Colors.black : Colors.white;
-    final cardBgColor = isDark ? const Color(0xFF121212) : const Color(0xFFFAFAFA);
-    final primaryColor = isDark ? Colors.white : Colors.black;
-    final secondaryColor = isDark ? Colors.black : Colors.white;
-    final subtitleColor = isDark ? Colors.grey.shade400 : const Color(0xFF555555);
 
     final pages = langProvider.onboardingPages;
+    final isLastPage = _currentPage == pages.length - 1;
 
     return Scaffold(
-      backgroundColor: bgColor,
       body: SafeArea(
         child: Column(
           children: [
+      
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: cardBgColor,
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: primaryColor, width: 1.5),
-                    ),
-                    child: Text(
-                      'MINISHOP',
-                      style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 12,
-                        letterSpacing: 2,
-                      ),
+                  Text(
+                    'MINISHOP',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 2,
                     ),
                   ),
- Row(
+                  Row(
                     children: [
-                       InkWell(
-                        onTap: () => langProvider.toggleLanguage(),
-                        borderRadius: BorderRadius.circular(20),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: cardBgColor,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: primaryColor, width: 1.5),
+                    
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                        ),
+                        onPressed: () => langProvider.toggleLanguage(),
+                        child: Text(
+                          langProvider.isMyanmar ? 'မြန်မာ' : 'EN',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.primary,
                           ),
+                        ),
+                      ),
+                      
+                 
+                      IconButton(
+                        visualDensity: VisualDensity.compact,
+                        icon: Icon(
+                          isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
+                          size: 22,
+                        ),
+                        onPressed: () => themeProvider.toggleTheme(!isDark),
+                      ),
+
+                     
+                      if (!isLastPage)
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                          ),
+                          onPressed: _navigateToHome,
                           child: Text(
-                            langProvider.isMyanmar ? 'မြန်မာ' : 'EN',
+                            'Skip',
                             style: TextStyle(
-                              color: primaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
+                              color: theme.colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-
-                      InkWell(
-                        onTap: () => themeProvider.toggleTheme(!isDark),
-                        borderRadius: BorderRadius.circular(20),
-                        child: Container(
-                          padding: const EdgeInsets.all(7),
-                          decoration: BoxDecoration(
-                            color: cardBgColor,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: primaryColor, width: 1.5),
-                          ),
-                          child: Icon(
-                            isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
-                            color: primaryColor,
-                            size: 18,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ],
               ),
             ),
 
+            const Divider(height: 1,),
+
+           
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
@@ -113,169 +119,115 @@ final bgColor = isDark ? Colors.black : Colors.white;
                 itemCount: pages.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Spacer(),
-
-                        Container(
-                          width: double.infinity,
-                          height: 280,
-                          decoration: BoxDecoration(
-                            color: cardBgColor,
-                            borderRadius: BorderRadius.circular(32),
-                            border: Border.all(color: primaryColor, width: 2),
-                          ),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                width: 170,
-                                height: 170,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: primaryColor.withOpacity(0.15),
-                                    width: 1.5,
-                                  ),
-                                ),
-                              ),
-                              _buildBlackWhiteIllustration(index, primaryColor),
-                            ],
-                          ),
-                        ),
-
-                        const Spacer(),
-
                         Text(
-                          pages[index]['subtitle']!,
-                          style: TextStyle(
-                            color: subtitleColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2.5,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-Text(
-                          pages[index]['title']!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                          '0${index + 1}',
+                          style: theme.textTheme.displayMedium?.copyWith(
+                            fontWeight: FontWeight.w900,
+                            color: theme.colorScheme.primary.withOpacity(0.2),
                           ),
                         ),
                         const SizedBox(height: 12),
-
+                        Text(
+                          pages[index]['subtitle']!.toUpperCase(),
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          pages[index]['title']!,
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            height: 1.2,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
                         Text(
                           pages[index]['description']!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: subtitleColor,
-                            fontSize: 14,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
                             height: 1.5,
                           ),
                         ),
-                        const SizedBox(height: 20),
                       ],
                     ),
                   );
                 },
               ),
             ),
- Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                pages.length,
-                (index) => AnimatedContainer(
-                  duration: const Duration(milliseconds: 250),
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  height: 8,
-                  width: _currentPage == index ? 24 : 8,
-                  decoration: BoxDecoration(
-                    color: _currentPage == index
-                        ? primaryColor
-                        : primaryColor.withOpacity(0.25),
-                    borderRadius: BorderRadius.circular(4),
+
+            
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: Row(
+                children: List.generate(
+                  pages.length,
+                  (index) => AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.only(right: 6),
+                    height: 4,
+                    width: _currentPage == index ? 28 : 12,
+                    decoration: BoxDecoration(
+                      color: _currentPage == index
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                 ),
               ),
             ),
+
             const SizedBox(height: 32),
 
+          
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
               child: SizedBox(
                 width: double.infinity,
-                height: 54,
-                child: _currentPage == pages.length - 1
-                    ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryColor,
-                          foregroundColor: secondaryColor,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(27),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ProductListView(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          langProvider.getStarted,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )
-                    : OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          foregroundColor: primaryColor,
-                          side: BorderSide(color: primaryColor, width: 2),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(27),
-                          ),
-                        ),
-                        onPressed: () {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        },
-                        child: Text(
-                          langProvider.next,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                height: 50,
+                child: FilledButton(
+                  style: FilledButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (isLastPage) {
+                      _navigateToHome();
+                    } else {
+                      _pageController.nextPage(
+                        duration: const Duration(milliseconds: 250),
+                        curve: Curves.easeInOut,
+                      );
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        isLastPage ? langProvider.getStarted : langProvider.next,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
+                      
+                    ],
+                  ),
+                ),
               ),
             ),
-            const SizedBox(height: 12),
           ],
         ),
       ),
     );
-  }
-Widget _buildBlackWhiteIllustration(int index, Color color) {
-    switch (index) {
-      case 0:
-        return Icon(Icons.storefront_outlined, size: 100, color: color);
-      case 1:
-        return Icon(Icons.shopping_cart_outlined, size: 100, color: color);
-      case 2:
-        return Icon(Icons.shopping_bag_outlined, size: 100, color: color);
-      default:
-        return Icon(Icons.store_outlined, size: 100, color: color);
-    }
   }
 }

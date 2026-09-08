@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mini_shop/view/check_out_view.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../providers/theme_provider.dart';
 import '../providers/language_provider.dart';
+
 
 class CartView extends StatelessWidget {
   const CartView({super.key});
@@ -13,7 +15,8 @@ class CartView extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final langProvider = Provider.of<LanguageProvider>(context);
     final isDark = themeProvider.isDarkMode;
- final bgColor = isDark ? Colors.black : Colors.white;
+
+    final bgColor = isDark ? Colors.black : Colors.white;
     final primaryColor = isDark ? Colors.white : Colors.black;
     final secondaryColor = isDark ? Colors.black : Colors.white;
     final cardBgColor = isDark ? const Color(0xFF121212) : const Color(0xFFFAFAFA);
@@ -130,7 +133,7 @@ class CartView extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(width: 14),
- Expanded(
+                            Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -156,7 +159,6 @@ class CartView extends StatelessWidget {
                                 ],
                               ),
                             ),
-
                             Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
@@ -200,8 +202,7 @@ class CartView extends StatelessWidget {
                     },
                   ),
                 ),
-
-                 Container(
+                Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: cardBgColor,
@@ -246,15 +247,10 @@ class CartView extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: primaryColor,
-                                content: Text(
-                                  langProvider.isMyanmar
-                                      ? 'ဝယ်ယူမှု အောင်မြင်ပါသည်။'
-                                      : 'Checkout feature coming soon!',
-                                  style: TextStyle(color: secondaryColor),
-                                ),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CheckoutView(),
                               ),
                             );
                           },
@@ -269,9 +265,7 @@ class CartView extends StatelessWidget {
                                   letterSpacing: 1.5,
                                 ),
                               ),
-                              const SizedBox(width: 8),
-                              const Icon(Icons.arrow_forward_rounded, size: 18),
-                            ],
+                                  ],
                           ),
                         ),
                       ),
@@ -300,7 +294,7 @@ class _EmptyCartPainter extends CustomPainter {
 
     final w = size.width;
     final h = size.height;
-canvas.drawLine(Offset(w * 0.1, h * 0.25), Offset(w * 0.25, h * 0.25), paint);
+    canvas.drawLine(Offset(w * 0.1, h * 0.25), Offset(w * 0.25, h * 0.25), paint);
     canvas.drawLine(Offset(w * 0.25, h * 0.25), Offset(w * 0.35, h * 0.65), paint);
 
     final basketPath = Path()
@@ -309,8 +303,8 @@ canvas.drawLine(Offset(w * 0.1, h * 0.25), Offset(w * 0.25, h * 0.25), paint);
       ..lineTo(w * 0.75, h * 0.65)
       ..lineTo(w * 0.35, h * 0.65);
     canvas.drawPath(basketPath, paint);
- canvas.drawLine(Offset(w * 0.4, h * 0.42), Offset(w * 0.7, h * 0.55), paint);
- canvas.drawCircle(Offset(w * 0.42, h * 0.78), 5, paint);
+    canvas.drawLine(Offset(w * 0.4, h * 0.42), Offset(w * 0.7, h * 0.55), paint);
+    canvas.drawCircle(Offset(w * 0.42, h * 0.78), 5, paint);
     canvas.drawCircle(Offset(w * 0.68, h * 0.78), 5, paint);
   }
 
