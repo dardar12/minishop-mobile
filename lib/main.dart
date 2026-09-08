@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mini_shop/view/favorite_provider.dart';
+import 'package:mini_shop/providers/favourite_provider.dart';
+
 import 'package:mini_shop/view/get_started_view.dart';
 import 'package:provider/provider.dart';
 import 'providers/theme_provider.dart';
@@ -15,7 +16,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
-        ChangeNotifierProvider(create: (_) => FavoriteProvider()), // 2. Register FavoriteProvider
+        ChangeNotifierProvider(create: (_) => FavoriteProvider()),
       ],
       child: const MyApp(),
     ),

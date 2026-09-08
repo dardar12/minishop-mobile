@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mini_shop/view/favorite_provider.dart';
+import 'package:mini_shop/providers/favourite_provider.dart';
+
 import 'package:provider/provider.dart';
 import '../providers/product_provider.dart';
 import '../providers/cart_provider.dart';
