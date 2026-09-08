@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mini_shop/providers/favourite_provider.dart';
+import 'package:mini_shop/view/settings_view.dart';
+import 'package:mini_shop/view/shipping_address_view.dart';
 
 import 'package:provider/provider.dart';
 import '../providers/product_provider.dart';
@@ -84,7 +86,7 @@ class _ProductListViewState extends State<ProductListView> {
     super.dispose();
   }
 
-  void _showProfileBottomSheet(
+void _showProfileBottomSheet(
     BuildContext context,
     Color bgColor,
     Color primaryColor,
@@ -135,42 +137,58 @@ class _ProductListViewState extends State<ProductListView> {
                 style: TextStyle(color: subtitleColor, fontSize: 13),
               ),
               const SizedBox(height: 24),
+              
+            // 1. MY ORDERS -> CartView
               ListTile(
                 leading: Icon(Icons.shopping_bag_outlined, color: primaryColor),
                 title: Text(
-                  langProvider.isMyanmar
-                      ? 'ကျွန်ုပ်၏ မှာယူမှုများ'
-                      : 'My Orders',
+                  langProvider.isMyanmar ? 'ကျွန်ုပ်၏ မှာယူမှုများ' : 'My Orders',
                   style: TextStyle(color: primaryColor),
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CartView()),
+                  );
+                },
               ),
+
+              // 2. SAVED ITEMS -> Favorites Toggle
               ListTile(
-                leading: Icon(
-                  Icons.favorite_border_rounded,
-                  color: primaryColor,
-                ),
+                leading: Icon(Icons.favorite_border_rounded, color: primaryColor),
                 title: Text(
-                  langProvider.isMyanmar
-                      ? 'သိမ်းဆည်းထားသော အရာများ'
-                      : 'Saved Items',
+                  langProvider.isMyanmar ? 'သိမ်းဆည်းထားသော အရာများ' : 'Saved Items',
                   style: TextStyle(color: primaryColor),
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                  setState(() {
+                    _showOnlyFavorites = true;
+                  });
+                },
               ),
+
+              // 3. SHIPPING ADDRESS -> ShippingAddressView
               ListTile(
                 leading: Icon(Icons.location_on_outlined, color: primaryColor),
                 title: Text(
-                  langProvider.isMyanmar
-                      ? 'ပို့ဆောင်ရမည့် လိပ်စာ'
-                      : 'Shipping Address',
+                  langProvider.isMyanmar ? 'ပို့ဆောင်ရမည့် လိပ်စာ' : 'Shipping Address',
                   style: TextStyle(color: primaryColor),
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ShippingAddressView()),
+                  );
+                },
               ),
+
+              // 4. SETTINGS -> SettingsView
               ListTile(
                 leading: Icon(Icons.settings_outlined, color: primaryColor),
                 title: Text(
@@ -178,7 +196,13 @@ class _ProductListViewState extends State<ProductListView> {
                   style: TextStyle(color: primaryColor),
                 ),
                 trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const SettingsView()),
+                  );
+                },
               ),
               const SizedBox(height: 16),
             ],
@@ -297,11 +321,7 @@ class _ProductListViewState extends State<ProductListView> {
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(width: 4),
-                                    const Text(
-                                      '✨',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
+                                    
                                   ],
                                 ),
                               ],
@@ -816,8 +836,8 @@ class _ProductListViewState extends State<ProductListView> {
                                 ),
                                 const SizedBox(width: 4),
                                 Icon(
-                                  Icons.arrow_forward_rounded,
-                                  size: 14,
+                                  Icons.arrow_forward_ios,
+                                  size: 12,
                                   color: subtitleColor,
                                 ),
                               ],
@@ -1077,7 +1097,7 @@ class _ProductListViewState extends State<ProductListView> {
         '$count',
         textAlign: TextAlign.center,
         style: const TextStyle(
-          color: Colors.white,
+          color: Colors.red,
           fontSize: 9,
           fontWeight: FontWeight.bold,
         ),
